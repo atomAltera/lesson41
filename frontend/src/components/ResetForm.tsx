@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {LoginFormData, SignupFormData} from "../enitites";
+import {ResetFormData} from "../enitites";
 import {PrimaryButton} from "./buttons";
 import {Alert, Input, InputGroup} from "./form";
 
@@ -7,13 +7,12 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 
 interface Props {
-    onSubmit: (form: LoginFormData) => void;
+    onSubmit: (form: ResetFormData) => void;
 }
 
 
 interface Form {
     email?: string;
-    password?: string;
 }
 
 type Errors = Partial<Form>;
@@ -33,18 +32,12 @@ function validate(form: Form): Errors {
         errors.email = "Email is required";
     }
 
-    // Password
-    if (!form.password) {
-        errors.password = "Password is required";
-    }
-
     return errors;
 }
 
 
-export const LoginForm: React.FC<Props> = ({onSubmit}) => {
+export const ResetForm: React.FC<Props> = ({onSubmit}) => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [errors, setErrors] = useState<Errors>({});
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -53,7 +46,6 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
 
         const errors = validate({
             email,
-            password,
         })
 
         if (Object.keys(errors).length > 0) {
@@ -63,7 +55,6 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
 
         onSubmit({
             email,
-            password,
         });
     }
 
@@ -80,26 +71,13 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
                 {errors.email && <Alert>{errors.email}</Alert>}
             </InputGroup>
 
-            <InputGroup bad={!!errors.password}>
-                <label>Password</label>
-                <Input
-                    type="password"
-                    placeholder="Your password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                />
-                {errors.password && <Alert>{errors.password}</Alert>}
-            </InputGroup>
-
             <ButtonGroup>
                 <PrimaryButton
                     size="large"
                     type="submit"
-                >Login</PrimaryButton>
+                >Submit</PrimaryButton>
 
-                <Link to="/reset">Reset Password</Link>
-
-                <Link to="/signup">Sign Up</Link>
+                <Link to="/login">Login</Link>
 
             </ButtonGroup>
         </form>
