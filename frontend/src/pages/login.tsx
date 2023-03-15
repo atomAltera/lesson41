@@ -4,11 +4,11 @@ import {Footer} from "../components/Footer";
 import {MainMenu} from "../components/MeinMenu";
 import {Screen, SmColumn} from "../components/layouts";
 import {Plate} from "../components/Plate";
-import {SignupForm} from "../components/SignupForm";
-import {SignupFormData} from "../enitites";
+import {LoginFormData} from "../enitites";
+import {LoginForm} from "../components/LoginForm";
 
-export const SignupPage: React.FC = () => {
-    function handleSubmit(form: SignupFormData) {
+export const LoginPage: React.FC = () => {
+    function handleSubmit(form: LoginFormData) {
         console.log(form);
     }
 
@@ -18,10 +18,10 @@ export const SignupPage: React.FC = () => {
                 <MainMenu/>
 
                 <SmColumn>
-                    <h1>Registration</h1>
+                    <h1>Login</h1>
 
                     <Plate>
-                        <SignupForm onSubmit={handleSubmit}/>
+                        <LoginForm onSubmit={handleSubmit}/>
                     </Plate>
                 </SmColumn>
             </Screen>
