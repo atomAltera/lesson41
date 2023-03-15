@@ -12,3 +12,9 @@ export interface LoginFormData {
 export interface ResetFormData {
     email: string;
 }
+
+export interface User {
+    id: string;
+    email: string;
+    displayName: string;
+}

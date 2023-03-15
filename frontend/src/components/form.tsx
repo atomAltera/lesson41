@@ -26,5 +26,10 @@ export const InputGroup = styled.div<{ bad?: boolean }>`
   ${Input} {
     border-color: ${(props) => (props.bad ? "red" : "auto")};
   }
+  
+  label {
+    font-size: 0.9em;
+    font-weight: 300;
+  }
 `;
 

@@ -7,6 +7,7 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 
 interface Props {
+    loading?: boolean;
     onSubmit: (form: SignupFormData) => void;
 }
 
@@ -78,7 +79,9 @@ function validate(form: Form): Errors {
 }
 
 
-export const SignupForm: React.FC<Props> = ({onSubmit}) => {
+export const SignupForm: React.FC<Props> = (props) => {
+    const {loading, onSubmit} = props;
+
     const [displayName, setDisplayName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -159,7 +162,11 @@ export const SignupForm: React.FC<Props> = ({onSubmit}) => {
                 <PrimaryButton
                     size="large"
                     type="submit"
-                >Sign up</PrimaryButton>
+                    disabled={loading}
+                >
+                    {loading ? "Loading..." : "Sign up"}
+
+                </PrimaryButton>
 
                 <Link to="/login">Login</Link>
 
