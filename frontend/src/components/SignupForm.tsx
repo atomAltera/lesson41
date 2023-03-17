@@ -49,6 +49,10 @@ function validate(form: Form): Errors {
         errors.email = "Email is required";
     }
 
+    if (form.email && form.email.length > 1024) {
+        errors.email = "Email must be at most 1024 characters";
+    }
+
     if (form.email && !form.email.includes("@")) {
         errors.email = "Email is invalid";
     }
