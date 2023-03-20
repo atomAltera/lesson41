@@ -1,4 +1,4 @@
-import {SignupFormData, User} from "../entities";
+import {LoginFormData, SignupFormData, User} from "../entities";
 
 export const EmailTakenError = new Error("Email taken");
 
@@ -23,6 +23,20 @@ export async function register(form: SignupFormData): Promise<User> {
     }
 
     users.set(form.email, user);
+
+    return user;
+}
+
+export async function login(form: LoginFormData): Promise<User | null> {
+    const user = users.get(form.email);
+
+    if (!user) {
+        return null;
+    }
+
+    if (user.password !== form.password) {
+        return null;
+    }
 
     return user;
 }

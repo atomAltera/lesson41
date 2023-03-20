@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 app.post("/api/signup", async (req, res) => {
     const {displayName, email, password} = req.body;
 
-    if (
+    if ( 
         typeof displayName !== "string" ||
         typeof email !== "string" ||
         typeof password !== "string"
@@ -49,8 +49,6 @@ app.post("/api/signup", async (req, res) => {
             password,
         });
 
-
-
         res.status(201).json(sanitizeUser(user));
 
     } catch (err) {
@@ -63,7 +61,7 @@ app.post("/api/signup", async (req, res) => {
     }
 })
 
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
     const {email, password} = req.body;
 
     if (
@@ -74,7 +72,23 @@ app.post("/api/login", (req, res) => {
         return;
     }
 
-    res.status(401).end();
+    try {
+        const user = await services.users.login({
+            email,
+            password,
+        })
+
+        if (!user) {
+            res.status(401).end();
+            return;
+        }
+
+        res.status(200).json(sanitizeUser(user));
+
+    } catch (err) {
+        res.status(500).end();
+        return;
+    }
 })
 
 export function start(port: number) {
