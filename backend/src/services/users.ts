@@ -27,16 +27,20 @@ export async function register(form: SignupFormData): Promise<User> {
     return user;
 }
 
-export async function login(form: LoginFormData): Promise<User | null> {
+export async function login(form: LoginFormData): Promise<User | undefined> {
     const user = users.get(form.email);
 
     if (!user) {
-        return null;
+        return undefined;
     }
 
     if (user.password !== form.password) {
-        return null;
+        return undefined;
     }
 
     return user;
+}
+
+export async function getByEmail(email: string): Promise<User | undefined> {
+    return users.get(email);
 }

@@ -1,18 +1,20 @@
 import express from "express";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import services from "../services";
 import {sanitizeUser} from "../entities";
+import {getCurrentUser, login} from "./auth";
 
 const app = express();
 
 app.use(morgan(":remote-addr :method :url :status - :response-time ms"));
 
 app.use(express.json({limit: "1mb"}));
+app.use(cookieParser())
 
 app.get("/", (req, res) => {
     res.end("Hello World");
 });
-
 
 app.post("/api/signup", async (req, res) => {
     const {displayName, email, password} = req.body;
@@ -49,6 +51,8 @@ app.post("/api/signup", async (req, res) => {
             password,
         });
 
+        await login(res, user);
+
         res.status(201).json(sanitizeUser(user));
 
     } catch (err) {
@@ -83,13 +87,29 @@ app.post("/api/login", async (req, res) => {
             return;
         }
 
+        await login(res, user);
+
         res.status(200).json(sanitizeUser(user));
 
     } catch (err) {
         res.status(500).end();
-        return;
     }
 })
+
+app.get("/api/me", async (req, res) => {
+    try {
+        const user = await getCurrentUser(req);
+
+        if (!user) {
+            res.status(401).end();
+            return;
+        }
+
+        res.status(200).json(sanitizeUser(user));
+    } catch (err) {
+        res.status(500).end();
+    }
+});
 
 export function start(port: number) {
     app.listen(port, () => {
