@@ -1,40 +1,47 @@
 import {LoginFormData, SignupFormData, User} from "../entities";
+import db from "../db";
+import {generateNewId} from "./utils";
+import bcrypt from "bcrypt";
 
 export const EmailTakenError = new Error("Email taken");
 
 
-// map from email to user
-const users: Map<string, User> = new Map();
-
-
 export async function register(form: SignupFormData): Promise<User> {
-    if (users.has(form.email)) {
+    form.email = form.email.toLowerCase();
+
+    const existingUser = await db.users.getByEmail(form.email);
+    if (existingUser) {
         throw EmailTakenError;
     }
 
+    const passwordHash = await bcrypt.hash(form.password, 10);
+
     const user: User = {
-        id: form.email,
+        id: generateNewId(),
         email: form.email,
         displayName: form.displayName,
 
         // service fields
-        password: form.password,
+        password: passwordHash,
         createdAt: new Date(),
     }
 
-    users.set(form.email, user);
+    await db.users.create(user);
 
     return user;
 }
 
 export async function login(form: LoginFormData): Promise<User | undefined> {
-    const user = users.get(form.email);
+    form.email = form.email.toLowerCase();
 
+    const user = await db.users.getByEmail(form.email)
     if (!user) {
         return undefined;
     }
 
-    if (user.password !== form.password) {
+
+    const ok = await bcrypt.compare(form.password, user.password);
+    if (!ok) {
         return undefined;
     }
 
@@ -42,5 +49,9 @@ export async function login(form: LoginFormData): Promise<User | undefined> {
 }
 
 export async function getByEmail(email: string): Promise<User | undefined> {
-    return users.get(email);
+    return db.users.getByEmail(email);
+}
+
+export async function get(id: string): Promise<User | undefined> {
+    return db.users.get(id);
 }

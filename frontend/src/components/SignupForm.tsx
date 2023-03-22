@@ -36,8 +36,8 @@ function validate(form: Form): Errors {
         errors.displayName = "Display name is required";
     }
 
-    if (form.displayName && form.displayName.length < 5) {
-        errors.displayName = "Display name must be at least 5 characters";
+    if (form.displayName && form.displayName.length < 2) {
+        errors.displayName = "Display name must be at least 2 characters";
     }
 
     if (form.displayName && form.displayName.length > 20) {
