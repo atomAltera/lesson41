@@ -1,22 +1,19 @@
-import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import React from "react";
 import {Footer} from "../components/Footer";
 import {MainMenu} from "../components/MeinMenu";
 import {Screen} from "../components/layouts";
-import {User} from "../enitites";
-import * as api from "../api";
-import {useCurrentUser} from "../hooks";
+import {useArticles, useCurrentUser} from "../hooks";
+import {NavLink} from "react-router-dom";
 
-
-export const ProfilePage: React.FC = () => {
-    const {user, loading, error} = useCurrentUser();
+export const ArticlesPage: React.FC = () => {
+    const {articles, loading, error} = useArticles();
 
     if (loading) {
         return (
             <>
                 <Screen>
                     <MainMenu/>
-                    <h1>Profile page</h1>
+                    <h1>My Articles</h1>
                     <p>Loading...</p>
                 </Screen>
                 <Footer/>
@@ -29,7 +26,7 @@ export const ProfilePage: React.FC = () => {
             <>
                 <Screen>
                     <MainMenu/>
-                    <h1>Profile page</h1>
+                    <h1>My Articles</h1>
                     <p>Error</p>
                 </Screen>
                 <Footer/>
@@ -41,9 +38,15 @@ export const ProfilePage: React.FC = () => {
         <>
             <Screen>
                 <MainMenu/>
-                <h1>Profile page</h1>
+                <h1>My Articles</h1>
+                <p>Articles: {articles.length}</p>
 
-                <p>Current user: {user.displayName} ({user.email})</p>
+                {articles.map(article => (
+                    <section key={article.id}>
+                        <h2><NavLink to={`/articles/${article.id}`}>{article.title}</NavLink></h2>
+                        <p>{article.content}</p>
+                    </section>
+                ))}
             </Screen>
             <Footer/>
         </>

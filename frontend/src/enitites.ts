@@ -1,3 +1,4 @@
+// Users
 export interface SignupFormData {
     displayName: string;
     email: string;
@@ -17,4 +18,21 @@ export interface User {
     id: string;
     email: string;
     displayName: string;
+}
+
+// Articles
+export interface Article {
+    id: string;
+    authorUserId: string;
+    authorDisplayName: string;
+
+    title: string;
+    content: string;
+
+    createdAt: Date;
+}
+
+export interface ArticleFormData {
+    title: string;
+    content: string;
 }

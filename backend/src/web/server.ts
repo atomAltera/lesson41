@@ -148,7 +148,7 @@ app.post("/api/articles", async (req, res) => {
             return;
         }
 
-        if (content.length < 100 || content.length > 10000) {
+        if (content.length < 20 || content.length > 10000) {
             res.status(400).end();
             return;
         }

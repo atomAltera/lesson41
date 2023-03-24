@@ -5,6 +5,8 @@ import {SignupPage} from "./pages/signup";
 import {LoginPage} from "./pages/login";
 import {ResetPage} from "./pages/reset";
 import {ProfilePage} from "./pages/profile";
+import {ArticlesPage} from "./pages/articles";
+import {NewArticlePage} from "./pages/new-article";
 
 export const router = createBrowserRouter([
     {
@@ -26,5 +28,13 @@ export const router = createBrowserRouter([
     {
         path: "/profile",
         element: <ProfilePage/>
+    },
+    {
+        path: "/articles",
+        element: <ArticlesPage/>
+    },
+    {
+        path: "/articles/new",
+        element: <NewArticlePage/>
     }
 ]);
