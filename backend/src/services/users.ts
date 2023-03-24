@@ -2,8 +2,7 @@ import {LoginFormData, SignupFormData, User} from "../entities";
 import db from "../db";
 import {generateNewId} from "./utils";
 import bcrypt from "bcrypt";
-
-export const EmailTakenError = new Error("Email taken");
+import {EmailTakenError} from "./errors";
 
 
 export async function register(form: SignupFormData): Promise<User> {
