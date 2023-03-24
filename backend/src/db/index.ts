@@ -1,4 +1,4 @@
-import {MongoClient, Db, Collection} from "mongodb";
+import {MongoClient} from "mongodb";
 
 import * as users from "./users";
 
