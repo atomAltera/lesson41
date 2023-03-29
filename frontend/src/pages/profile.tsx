@@ -15,7 +15,7 @@ export const ProfilePage: React.FC = () => {
         return (
             <>
                 <Screen>
-                    <MainMenu/>
+                    <MainMenu user={user}/>
                     <h1>Profile page</h1>
                     <p>Loading...</p>
                 </Screen>
@@ -28,7 +28,7 @@ export const ProfilePage: React.FC = () => {
         return (
             <>
                 <Screen>
-                    <MainMenu/>
+                    <MainMenu user={user}/>
                     <h1>Profile page</h1>
                     <p>Error</p>
                 </Screen>
@@ -40,7 +40,7 @@ export const ProfilePage: React.FC = () => {
     return (
         <>
             <Screen>
-                <MainMenu/>
+                <MainMenu user={user}/>
                 <h1>Profile page</h1>
 
                 <p>Current user: {user.displayName} ({user.email})</p>

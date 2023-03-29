@@ -16,32 +16,6 @@ export const NewArticlePage: React.FC = () => {
 
     const navigate = useNavigate();
 
-    if (loading) {
-        return (
-            <>
-                <Screen>
-                    <MainMenu/>
-                    <h1>New article</h1>
-                    <p>Loading...</p>
-                </Screen>
-                <Footer/>
-            </>
-        );
-    }
-
-    if (error) {
-        return (
-            <>
-                <Screen>
-                    <MainMenu/>
-                    <h1>New article</h1>
-                    <p>Error</p>
-                </Screen>
-                <Footer/>
-            </>
-        );
-    }
-
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
@@ -51,26 +25,36 @@ export const NewArticlePage: React.FC = () => {
             })
     }
 
+    const ok = !loading && !error;
+
     return (
         <>
             <Screen>
-                <MainMenu/>
+                <MainMenu user={user}/>
+
                 <h1>New article</h1>
 
-                <p>Current user: {user.displayName} ({user.email})</p>
+                {loading && (<div>Loading...</div>)}
+                {error && (<div>Error...</div>)}
 
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Title:
-                        <input type="text" value={title} onChange={e => setTitle(e.target.value)} name="title"/>
-                    </label>
-                    <label>
-                        Content:
-                        <textarea name="content" value={content} onChange={e => setContent(e.target.value)}/>
-                    </label>
+                {ok && (
+                    <>
+                        <p>Current user: {user.displayName} ({user.email})</p>
 
-                    <PrimaryButton type="submit">Submit</PrimaryButton>
-                </form>
+                        <form onSubmit={handleSubmit}>
+                            <label>
+                                Title:
+                                <input type="text" value={title} onChange={e => setTitle(e.target.value)} name="title"/>
+                            </label>
+                            <label>
+                                Content:
+                                <textarea name="content" value={content} onChange={e => setContent(e.target.value)}/>
+                            </label>
+
+                            <PrimaryButton type="submit">Submit</PrimaryButton>
+                        </form>
+                    </>
+                )}
             </Screen>
             <Footer/>
         </>

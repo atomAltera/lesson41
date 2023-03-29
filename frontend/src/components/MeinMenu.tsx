@@ -3,6 +3,11 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 import logoUrl from "../logo.svg";
+import {User} from "../enitites";
+
+interface Props {
+    user?: User;
+}
 
 const StyledNav = styled.nav`
   display: flex;
@@ -38,7 +43,10 @@ const Logo = styled.img`
     margin-right: 1rem;
 `;
 
-export const MainMenu: React.FC = () => {
+export const MainMenu: React.FC<Props> = ({user}) => {
+    function handleLogoutClick(e: React.SyntheticEvent) {
+        document.cookie = "session=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
 
     return (
       <StyledNav>
@@ -46,17 +54,19 @@ export const MainMenu: React.FC = () => {
           <Logo src={logoUrl} alt="" />
         </NavLink>
 
-        <ul>
-          <li>
-            <NavLink to="/feed">Feed</NavLink>
-          </li>
-          <li>
-            <NavLink to="/signup">Register</NavLink>
-          </li>
-          <li>
-            <NavLink to="/login">Login</NavLink>
-          </li>
-        </ul>
+          {user ? (
+            <ul>
+                <li><NavLink to="/feed">Feed</NavLink></li>
+                <li><NavLink to="/articles">My Article</NavLink></li>
+                <li><NavLink to="/articles/new">New Article</NavLink></li>
+                <li><a href="/login" onClick={handleLogoutClick}>Logout</a></li>
+            </ul>
+          ) : (
+            <ul>
+                <li><NavLink to="/signup">Register</NavLink></li>
+                <li><NavLink to="/login">Login</NavLink></li>
+            </ul>
+          )}
       </StyledNav>
     );
 

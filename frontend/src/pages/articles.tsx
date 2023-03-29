@@ -6,39 +6,21 @@ import {useArticles, useCurrentUser} from "../hooks";
 import {NavLink} from "react-router-dom";
 
 export const ArticlesPage: React.FC = () => {
-    const {articles, loading, error} = useArticles();
+    const {articles, loading: articlesLoading, error: articlesError} = useArticles();
+    const {user, loading: userLoading, error: userError} = useCurrentUser();
 
-    if (loading) {
-        return (
-            <>
-                <Screen>
-                    <MainMenu/>
-                    <h1>My Articles</h1>
-                    <p>Loading...</p>
-                </Screen>
-                <Footer/>
-            </>
-        );
-    }
-
-    if (error) {
-        return (
-            <>
-                <Screen>
-                    <MainMenu/>
-                    <h1>My Articles</h1>
-                    <p>Error</p>
-                </Screen>
-                <Footer/>
-            </>
-        );
-    }
+    const loading = articlesLoading || userLoading;
+    const error = articlesError || userError;
 
     return (
         <>
             <Screen>
-                <MainMenu/>
+                <MainMenu user={user}/>
                 <h1>My Articles</h1>
+
+                {loading && (<div>Loading...</div>)}
+                {error && (<div>Error...</div>)}
+
                 <p>Articles: {articles.length}</p>
 
                 {articles.map(article => (
