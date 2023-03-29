@@ -7,6 +7,7 @@ import {ResetPage} from "./pages/reset";
 import {ProfilePage} from "./pages/profile";
 import {ArticlesPage} from "./pages/articles";
 import {NewArticlePage} from "./pages/new-article";
+import {ArticlePage} from "./pages/article";
 
 export const router = createBrowserRouter([
     {
@@ -36,5 +37,9 @@ export const router = createBrowserRouter([
     {
         path: "/articles/new",
         element: <NewArticlePage/>
+    },
+    {
+        path: "/articles/:articleId",
+        element: <ArticlePage/>
     }
 ]);

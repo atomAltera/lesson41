@@ -73,3 +73,39 @@ export function useArticles() {
         articles,
     }
 }
+
+export function useArticle(articleId: string) {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [notFound, setNotfound] = useState(false);
+    const [article, setArticle] = useState<Article>({} as any);
+
+    useEffect(() => {
+        setLoading(true);
+        setError(false);
+
+        api.getArticle(articleId)
+            .then(r => {
+                setLoading(false);
+
+                if (r.notFound) {
+                    setNotfound(true);
+                    return;
+                }
+
+                if (!r.ok) {
+                    setError(true);
+                    return;
+                }
+
+                setArticle(r.article!);
+            })
+    }, [])
+
+    return {
+        loading,
+        error,
+        notFound,
+        article,
+    }
+}
