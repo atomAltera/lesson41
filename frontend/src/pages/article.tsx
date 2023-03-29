@@ -40,7 +40,6 @@ export const ArticlePage: React.FC = () => {
                     </>
                 )}
 
-
             </Screen>
             <Footer/>
         </>

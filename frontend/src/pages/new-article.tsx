@@ -20,7 +20,12 @@ export const NewArticlePage: React.FC = () => {
         e.preventDefault();
 
         api.createArticle({title, content})
-            .then(() => {
+            .then((res) => {
+                if (res.article) {
+                    navigate(`/articles/${res.article.id}`)
+                    return;
+                }
+
                 navigate("/articles")
             })
     }
