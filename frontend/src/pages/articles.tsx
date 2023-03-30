@@ -4,6 +4,11 @@ import {MainMenu} from "../components/MeinMenu";
 import {Screen} from "../components/layouts";
 import {useArticles, useCurrentUser} from "../hooks";
 import {NavLink} from "react-router-dom";
+import styled from "styled-components";
+
+const Label = styled.h3`
+  margin-left: 7%;
+`;
 
 export const ArticlesPage: React.FC = () => {
     const {articles, loading: articlesLoading, error: articlesError} = useArticles();
@@ -16,6 +21,7 @@ export const ArticlesPage: React.FC = () => {
         <>
             <Screen>
                 <MainMenu user={user}/>
+                <Label>
                 <h1>My Articles</h1>
 
                 {loading && (<div>Loading...</div>)}
@@ -29,6 +35,7 @@ export const ArticlesPage: React.FC = () => {
                         <p>{article.content}</p>
                     </section>
                 ))}
+                </Label>
             </Screen>
             <Footer/>
         </>
