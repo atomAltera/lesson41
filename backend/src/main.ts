@@ -1,12 +1,20 @@
 import {start as startServer} from './web/server'
 import database from "./db";
+import dotenv from "dotenv";
 
+dotenv.config();
+
+const DATABASE_URI = process.env.DATABASE_URI;
 
 async function main() {
-    console.log("[INFO] Starting application")
+    if (!DATABASE_URI) {
+        throw new Error("DATABASE_URI is not defined")
+    }
+
+    console.log("[INFO] Starting application");
 
     console.log("[INFO] Connecting to database")
-    await database.connect("mongodb+srv://lenaposh1207:1234567890QAZ@cluster0.3zf1rvo.mongodb.net/test")
+    await database.connect(DATABASE_URI)
     console.log("[INFO] Connected to database")
 
     console.log("[INFO] Starting server")
