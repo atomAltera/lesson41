@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 app.post("/api/signup", async (req, res) => {
     let {displayName, email, password} = req.body;
 
-    if ( 
+    if (
         typeof displayName !== "string" ||
         typeof email !== "string" ||
         typeof password !== "string"
@@ -200,6 +200,36 @@ app.get("/api/articles/:id", async (req, res) => {
         res.status(500).end();
     }
 })
+
+app.delete("/api/articles/:id", async (req, res) => {
+    try {
+        const user = await getCurrentUser(req);
+        if (!user) {
+            res.status(401).end();
+            return;
+        }
+
+        const articleId = req.params.id;
+        const article = await services.articles.get(articleId);
+        if (!article) {
+            res.status(404).end();
+            return;
+        }
+
+        if (article.authorUserId !== user.id) {
+            res.status(403).end();
+            return;
+        }
+
+        await services.articles.remove(articleId);
+
+        res.status(200).end();
+
+    } catch (err) {
+        console.error("[ERROR] Failed to delete article", err);
+        res.status(500).end();
+    }
+});
 
 export function start(port: number) {
     app.listen(port, () => {

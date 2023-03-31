@@ -6,6 +6,7 @@ import * as users from "./users";
 import {UserNotFoundError} from "./errors";
 
 
+
 export async function create(authorUserId: string, form: ArticleFormData): Promise<Article> {
     const author = await users.get(authorUserId);
     if (!author) {
@@ -34,3 +35,8 @@ export async function listAllOfAuthor(authorUserId: string): Promise<Article[]> 
 export async function get(id: string): Promise<Article | undefined> {
     return db.articles.get(id);
 }
+
+export async function remove(id: string): Promise<void> {
+    await db.articles.remove(id);
+}
+

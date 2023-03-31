@@ -172,3 +172,47 @@ export async function getArticle(id: string): Promise<GetArticleResponse> {
         }
     }
 }
+
+interface DeleteArticleResponse {
+    ok: boolean;
+    notAuthenticated?: boolean;
+    notFound?: boolean;
+}
+
+export async function deleteArticle(id: string): Promise<DeleteArticleResponse> {
+    try {
+        await axios.delete(`/api/articles/${id}`)
+        return {
+            ok: true,
+        };
+
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            if (err.response?.status === 404) {
+                return {
+                    ok: false,
+                    notFound: true,
+                }
+            }
+
+            if (err.response?.status === 401) {
+                return {
+                    ok: false,
+                    notAuthenticated: true,
+                }
+            }
+
+            if (err.response?.status === 403) {
+                return {
+                    ok: false,
+                    notAuthenticated: true,
+                }
+            }
+        }
+
+        return {
+            ok: false,
+        }
+
+    }
+}

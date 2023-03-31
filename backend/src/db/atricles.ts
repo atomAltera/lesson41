@@ -2,7 +2,6 @@ import {Article, User} from "../entities";
 import {Collection, Db} from "mongodb";
 
 
-
 let collection: Collection<Article>;
 
 export async function init(db: Db) {
@@ -31,4 +30,7 @@ export async function listAllOfAuthor(authorUserId: string): Promise<Article[]> 
     return await collection.find({authorUserId}).toArray();
 }
 
+export function remove(id: string) {
+    return collection.deleteOne({id});
+}
 
