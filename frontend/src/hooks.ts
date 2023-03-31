@@ -39,7 +39,7 @@ export function useCurrentUser() {
     }
 }
 
-export function useArticles() {
+export function useMyArticles() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [articles, setArticles] = useState<Article[]>([]);

@@ -118,7 +118,7 @@ app.get("/api/me", async (req, res) => {
 
 
 // Articles
-app.post("/api/articles", async (req, res) => {
+app.post("/api/me/articles", async (req, res) => {
     try {
         const user = await getCurrentUser(req);
         if (!user) {
@@ -166,7 +166,7 @@ app.post("/api/articles", async (req, res) => {
     }
 })
 
-app.get("/api/articles", async (req, res) => {
+app.get("/api/me/articles", async (req, res) => {
     try {
         const user = await getCurrentUser(req);
         if (!user) {

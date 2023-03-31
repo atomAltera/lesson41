@@ -2,7 +2,7 @@ import React from "react";
 import {Footer} from "../components/Footer";
 import {MainMenu} from "../components/MeinMenu";
 import {Screen} from "../components/layouts";
-import {useArticle, useArticles, useCurrentUser} from "../hooks";
+import {useArticle, useCurrentUser} from "../hooks";
 import {useParams} from "react-router-dom";
 
 export const ArticlePage: React.FC = () => {

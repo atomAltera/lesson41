@@ -2,7 +2,7 @@ import React from "react";
 import {Footer} from "../components/Footer";
 import {MainMenu} from "../components/MeinMenu";
 import {Screen} from "../components/layouts";
-import {useArticles, useCurrentUser} from "../hooks";
+import {useMyArticles, useCurrentUser} from "../hooks";
 import {NavLink} from "react-router-dom";
 import styled from "styled-components";
 
@@ -11,7 +11,7 @@ const Label = styled.h3`
 `;
 
 export const ArticlesPage: React.FC = () => {
-    const {articles, loading: articlesLoading, error: articlesError} = useArticles();
+    const {articles, loading: articlesLoading, error: articlesError} = useMyArticles();
     const {user, loading: userLoading, error: userError} = useCurrentUser();
 
     const loading = articlesLoading || userLoading;

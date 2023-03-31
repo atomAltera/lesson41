@@ -96,7 +96,7 @@ interface CreateArticleResponse {
 
 export async function createArticle(articleForm: ArticleFormData): Promise<CreateArticleResponse> {
     try {
-        const res = await axios.post<Article>("/api/articles", articleForm)
+        const res = await axios.post<Article>("/api/me/articles", articleForm)
         return {
             ok: true,
             article: res.data,
@@ -125,7 +125,7 @@ interface MyArticlesResponse {
 
 export async function getMyArticles(): Promise<MyArticlesResponse> {
     try {
-        const res = await axios.get<Article[]>("/api/articles")
+        const res = await axios.get<Article[]>("/api/me/articles")
         return {
             ok: true,
             articles: res.data,
