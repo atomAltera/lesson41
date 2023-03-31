@@ -14,6 +14,8 @@ export const ArticlePage: React.FC = () => {
     const loading = articleLoading || userLoading;
     const error = articleError || userError;
 
+    debugger;
+
     const ok = !loading && !error && !notFound;
 
     return (

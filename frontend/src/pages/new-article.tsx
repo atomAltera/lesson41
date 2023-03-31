@@ -21,7 +21,7 @@ const ButtonGroup = styled.div`
 `;
 
 export const NewArticlePage: React.FC = () => {
-    const {user, loading, error} = useCurrentUser();
+    const {user, loading, error} = useCurrentUser(true);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -41,7 +41,7 @@ export const NewArticlePage: React.FC = () => {
             })
     }
 
-    const ok = !loading && !error;
+    const ok = !loading && !error && !!user;
 
     return (
         <>

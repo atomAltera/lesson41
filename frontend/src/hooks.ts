@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import * as api from "./api";
 
 
-export function useCurrentUser() {
+export function useCurrentUser(required?: boolean) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [user, setUser] = useState<User>();
@@ -17,11 +17,14 @@ export function useCurrentUser() {
         api.getMe()
             .then(r => {
                 if (r.notAuthenticated) {
-                    navigate("/login");
+                    if (required) {
+                        navigate("/login");
+                        return;
+                    }
+
+                    setUser(undefined);
                     return;
                 }
-
-                setLoading(false);
 
                 if (!r.ok) {
                     setError(true);
@@ -30,12 +33,13 @@ export function useCurrentUser() {
 
                 setUser(r.user);
             })
+            .finally(() => setLoading(false))
     }, [])
 
     return {
         loading,
         error,
-        user: user as User,
+        user,
     }
 }
 

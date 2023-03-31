@@ -9,7 +9,7 @@ import {useCurrentUser} from "../hooks";
 
 
 export const ProfilePage: React.FC = () => {
-    const {user, loading, error} = useCurrentUser();
+    const {user, loading, error} = useCurrentUser(true);
 
     if (loading) {
         return (
@@ -24,7 +24,7 @@ export const ProfilePage: React.FC = () => {
         );
     }
 
-    if (error) {
+    if (error || !user) {
         return (
             <>
                 <Screen>
