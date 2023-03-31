@@ -8,6 +8,7 @@ import {ProfilePage} from "./pages/profile";
 import {ArticlesPage} from "./pages/articles";
 import {NewArticlePage} from "./pages/new-article";
 import {ArticlePage} from "./pages/article";
+import {EditArticlePage} from "./pages/edit-article";
 
 export const router = createBrowserRouter([
     {
@@ -41,5 +42,9 @@ export const router = createBrowserRouter([
     {
         path: "/articles/:articleId",
         element: <ArticlePage/>
+    },
+    {
+        path: "/articles/:articleId/edit",
+        element: <EditArticlePage/>
     }
 ]);

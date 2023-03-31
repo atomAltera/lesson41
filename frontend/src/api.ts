@@ -1,7 +1,6 @@
 import {Article, ArticleFormData, LoginFormData, SignupFormData, User} from "./enitites";
 import axios from "axios";
 
-
 interface SignupResponse {
     ok: boolean;
     user?: User;
@@ -215,4 +214,52 @@ export async function deleteArticle(id: string): Promise<DeleteArticleResponse> 
         }
 
     }
+}
+
+interface UpdateArticleResponse {
+    ok: boolean;
+    notFound?: boolean;
+    notAuthenticated?: boolean;
+}
+
+export async function updateArticle(id: string, form: {
+    title: string;
+    content: string
+}): Promise<UpdateArticleResponse> {
+    try {
+        await axios.put(`/api/articles/${id}`, form)
+        return {
+            ok: true,
+        };
+
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            if (err.response?.status === 404) {
+                return {
+                    ok: false,
+                    notFound: true,
+                }
+            }
+
+            if (err.response?.status === 401) {
+                return {
+                    ok: false,
+                    notAuthenticated: true,
+                }
+            }
+
+            if (err.response?.status === 403) {
+                return {
+                    ok: false,
+                    notAuthenticated: true,
+                }
+            }
+        }
+
+        return {
+            ok: false,
+        }
+
+    }
+
 }

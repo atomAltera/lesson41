@@ -22,8 +22,8 @@ export const ArticlePage: React.FC = () => {
 
     const ok = !loading && !error && !notFound;
 
-
     const canDelete = user && user.id === article?.authorUserId;
+    const canEdit = user && user.id === article?.authorUserId;
 
     function handleDeleteClick() {
         setDeleting(true);
@@ -68,6 +68,12 @@ export const ArticlePage: React.FC = () => {
                                 disabled={deleting}
                                 onClick={handleDeleteClick}
                             >Delete</Button>
+                        )}
+
+                        {canEdit && (
+                            <Button
+                                onClick={() => navigate(`/articles/${article.id}/edit`)}
+                            >Edit</Button>
                         )}
                     </>
                 )}

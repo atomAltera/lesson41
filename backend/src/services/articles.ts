@@ -5,8 +5,6 @@ import {generateNewId} from "./utils";
 import * as users from "./users";
 import {UserNotFoundError} from "./errors";
 
-
-
 export async function create(authorUserId: string, form: ArticleFormData): Promise<Article> {
     const author = await users.get(authorUserId);
     if (!author) {
@@ -25,6 +23,11 @@ export async function create(authorUserId: string, form: ArticleFormData): Promi
     await db.articles.create(article);
 
     return article;
+}
+
+
+export async function update(id: string, form: ArticleFormData) {
+    await db.articles.update(id, form);
 }
 
 

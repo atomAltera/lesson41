@@ -231,6 +231,63 @@ app.delete("/api/articles/:id", async (req, res) => {
     }
 });
 
+app.put("/api/articles/:id", async (req, res) => {
+    try {
+        const user = await getCurrentUser(req);
+        if (!user) {
+            res.status(401).end();
+            return;
+        }
+
+        let {title, content} = req.body;
+        if (!title || !content) {
+            res.status(400).end();
+            return;
+        }
+
+        if (
+            typeof title !== "string" ||
+            typeof content !== "string"
+        ) {
+            res.status(400).end();
+            return;
+        }
+
+        title = title.trim();
+        content = content.trim();
+
+        if (title.length < 2 || title.length > 100) {
+            res.status(400).end();
+            return;
+        }
+
+        if (content.length < 20 || content.length > 10000) {
+            res.status(400).end();
+            return;
+        }
+
+        const articleId = req.params.id;
+        const article = await services.articles.get(articleId);
+        if (!article) {
+            res.status(404).end();
+            return;
+        }
+
+        if (article.authorUserId !== user.id) {
+            res.status(403).end();
+            return;
+        }
+
+        await services.articles.update(articleId, {title, content});
+
+        res.status(200).end();
+
+    } catch (err) {
+        console.error("[ERROR] Failed to delete article", err);
+        res.status(500).end();
+    }
+});
+
 export function start(port: number) {
     app.listen(port, () => {
         console.log(`[INFO] Server started on port ${port}`);

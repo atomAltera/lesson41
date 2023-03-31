@@ -1,4 +1,4 @@
-import {Article, User} from "../entities";
+import {Article, ArticleFormData, User} from "../entities";
 import {Collection, Db} from "mongodb";
 
 
@@ -32,5 +32,21 @@ export async function listAllOfAuthor(authorUserId: string): Promise<Article[]> 
 
 export function remove(id: string) {
     return collection.deleteOne({id});
+}
+
+
+export async function update(id: string, form: ArticleFormData) {
+    const filter = {
+        id,
+    }
+
+    const update = {
+        $set: {
+            title: form.title,
+            content: form.content,
+        }
+    }
+
+    await collection.updateOne(filter, update);
 }
 
