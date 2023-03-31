@@ -9,6 +9,15 @@ export const Input = styled.input`
     font-size: 1em;
 `;
 
+export const Textarea = styled.textarea`
+    display: block;
+    padding: 0.5em;
+    min-height: 10em;
+    border: 1px solid #dedede;
+    border-radius: 0.5em;
+    font-size: 1em;
+`
+
 export const Alert = styled.div`
   color: red;
 `;

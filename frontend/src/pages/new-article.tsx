@@ -10,7 +10,7 @@ import {PrimaryButton} from "../components/buttons";
 import styled from "styled-components";
 import { SmColumn } from "../components/layouts";
 import { Plate } from "../components/Plate";
-import { InputGroup } from "../components/form";
+import {InputGroup, Textarea} from "../components/form";
 import { Input } from "../components/form";
 
 const ButtonGroup = styled.div`
@@ -61,17 +61,21 @@ export const NewArticlePage: React.FC = () => {
 
                         <form onSubmit={handleSubmit}>
                         <InputGroup>
-                            <p>Title:</p>
-                                <Input type="text"
-                                 value={title}
-                                 onChange={e => setTitle(e.target.value)} 
-                                 name="title"
-                                 />
-                            <p>Content:</p>
-                                <textarea name="content"
-                                 value={content}
-                                 onChange={e => setContent(e.target.value)}/>
-                            
+                            <label>Title:</label>
+                            <Input
+                                type="text"
+                                name="title"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                             />
+
+                            <label>Content:</label>
+                            <Textarea
+                                name="content"
+                                value={content}
+                                onChange={e => setContent(e.target.value)}
+                            />
+
                         </InputGroup>
 
                         <ButtonGroup>
