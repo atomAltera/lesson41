@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  backend:
+    image: atomaltera/lesson41
+    ports:
+      - "80:3001"
+    environment:
+      DATABASE_URI: mongodb://database:27017/lesson41
+    depends_on:
+      - database
+
+  database:
+    image: mongo
