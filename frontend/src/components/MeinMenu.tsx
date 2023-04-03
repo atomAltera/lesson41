@@ -64,7 +64,7 @@ export const MainMenu: React.FC<Props> = ({user}) => {
           ) : (
             <ul>
                 <li><NavLink to="/signup">Register</NavLink></li>
-                <li><NavLink to="/login">Login</NavLink></li>
+                <li><NavLink to="/login" style={{color: "red"}}>Login</NavLink></li>
             </ul>
           )}
       </StyledNav>
