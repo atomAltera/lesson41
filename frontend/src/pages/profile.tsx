@@ -43,7 +43,7 @@ export const ProfilePage: React.FC = () => {
                 <MainMenu user={user}/>
                 <h1>Profile page</h1>
 
-                <p>Current user: {user.displayName} ({user.email})</p>
+                <p>Current logged in user: {user.displayName} ({user.email})</p>
             </Screen>
             <Footer/>
         </>

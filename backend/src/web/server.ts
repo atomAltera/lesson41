@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import services, {EmailTakenError} from "../services";
 import {sanitizeArticle, sanitizeUser} from "../entities";
 import {getCurrentUser, login} from "./auth";
+import path from "path";
+import * as fs from "fs";
 
 const app = express();
 
@@ -11,10 +13,6 @@ app.use(morgan(":remote-addr :method :url :status - :response-time ms"));
 
 app.use(express.json({limit: "1mb"}));
 app.use(cookieParser())
-
-app.get("/", (req, res) => {
-    res.end("Hello World");
-});
 
 // Users
 app.post("/api/signup", async (req, res) => {
@@ -287,6 +285,17 @@ app.put("/api/articles/:id", async (req, res) => {
         res.status(500).end();
     }
 });
+
+// Frontend
+
+app.use("/static", express.static("../frontend/build/static", {fallthrough: false}));
+
+app.get("/*", (req, res) => {
+    const indexHtml = fs.readFileSync("../frontend/build/index.html", "utf8");
+
+    res.setHeader("Content-Type", "text/html");
+    res.end(indexHtml);
+})
 
 export function start(port: number) {
     app.listen(port, () => {
