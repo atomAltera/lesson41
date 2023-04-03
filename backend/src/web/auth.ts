@@ -25,7 +25,14 @@ export async function getCurrentUser(req: Request): Promise<User | undefined> {
     }
 
     const secret = new TextEncoder().encode(SECRET);
-    const verified = await jose.jwtVerify(jwt, secret);
+    let verified: jose.JWTVerifyResult;
+
+    try {
+        verified = await jose.jwtVerify(jwt, secret);
+    } catch (err) {
+        return undefined;
+    }
+
     if (verified.protectedHeader.alg !== "HS256") {
         return undefined;
     }
