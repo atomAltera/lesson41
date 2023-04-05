@@ -6,6 +6,7 @@ import {sanitizeArticle, sanitizeUser} from "../entities";
 import {getCurrentUser, login} from "./auth";
 import path from "path";
 import * as fs from "fs";
+import {z} from "zod";
 
 const app = express();
 
@@ -16,41 +17,20 @@ app.use(cookieParser())
 
 // Users
 app.post("/api/signup", async (req, res) => {
-    let {displayName, email, password} = req.body;
+    const schema = z.object({
+        displayName: z.string().min(5).max(20),
+        email: z.string().email().max(1024),
+        password: z.string().min(8).max(1024)
+    });
 
-    if (
-        typeof displayName !== "string" ||
-        typeof email !== "string" ||
-        typeof password !== "string"
-    ) {
-        res.status(400).end();
-        return;
-    }
-
-    displayName = displayName.trim();
-    email = email.trim();
-
-    if (displayName.length < 5 || displayName.length > 20) {
-        res.status(400).end();
-        return;
-    }
-
-    if (email.length > 1024 || !email.includes("@")) {
-        res.status(400).end();
-        return;
-    }
-
-    if (password.length < 8 || password.length > 1024) {
-        res.status(400).end();
+    const report = schema.safeParse(req.body);
+    if (!report.success) {
+        res.status(400).json(report.error);
         return;
     }
 
     try {
-        const user = await services.users.register({
-            displayName,
-            email,
-            password,
-        });
+        const user = await services.users.register(report.data);
 
         await login(res, user);
 
@@ -68,21 +48,20 @@ app.post("/api/signup", async (req, res) => {
 })
 
 app.post("/api/login", async (req, res) => {
-    const {email, password} = req.body;
 
-    if (
-        typeof email !== "string" ||
-        typeof password !== "string"
-    ) {
-        res.status(400).end();
+    const schema = z.object({
+        email: z.string().email().max(1024),
+        password: z.string().min(8).max(1024)
+    });
+
+    const report = schema.safeParse(req.body);
+    if (!report.success) {
+        res.status(400).json(report.error);
         return;
     }
 
     try {
-        const user = await services.users.login({
-            email,
-            password,
-        })
+        const user = await services.users.login(report.data)
 
         if (!user) {
             res.status(401).end();
@@ -124,37 +103,18 @@ app.post("/api/me/articles", async (req, res) => {
             return;
         }
 
-        let {title, content} = req.body;
-        if (!title || !content) {
-            res.status(400).end();
-            return;
-        }
-
-        if (
-            typeof title !== "string" ||
-            typeof content !== "string"
-        ) {
-            res.status(400).end();
-            return;
-        }
-
-        title = title.trim();
-        content = content.trim();
-
-        if (title.length < 2 || title.length > 100) {
-            res.status(400).end();
-            return;
-        }
-
-        if (content.length < 20 || content.length > 10000) {
-            res.status(400).end();
-            return;
-        }
-
-        const article = await services.articles.create(user.id, {
-            title,
-            content,
+        const schema = z.object({
+            title: z.string().trim().min(2).max(100),
+            content: z.string().trim().min(20).max(10000),
         });
+
+        const report = schema.safeParse(req.body);
+        if (!report.success) {
+            res.status(400).json(report.error);
+            return;
+        }
+
+        const article = await services.articles.create(user.id, report.data);
 
         res.status(200).json(sanitizeArticle(article));
 
@@ -237,30 +197,14 @@ app.put("/api/articles/:id", async (req, res) => {
             return;
         }
 
-        let {title, content} = req.body;
-        if (!title || !content) {
-            res.status(400).end();
-            return;
-        }
+        const schema = z.object({
+            title: z.string().trim().min(2).max(100),
+            content: z.string().trim().min(20).max(10000),
+        });
 
-        if (
-            typeof title !== "string" ||
-            typeof content !== "string"
-        ) {
-            res.status(400).end();
-            return;
-        }
-
-        title = title.trim();
-        content = content.trim();
-
-        if (title.length < 2 || title.length > 100) {
-            res.status(400).end();
-            return;
-        }
-
-        if (content.length < 20 || content.length > 10000) {
-            res.status(400).end();
+        const report = schema.safeParse(req.body);
+        if (!report.success) {
+            res.status(400).json(report.error);
             return;
         }
 
@@ -276,7 +220,7 @@ app.put("/api/articles/:id", async (req, res) => {
             return;
         }
 
-        await services.articles.update(articleId, {title, content});
+        await services.articles.update(articleId, report.data);
 
         res.status(200).end();
 
