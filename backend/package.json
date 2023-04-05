@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "build:watch": "tsc -w",
-    "start:dev": "nodemon -w build/ build/main.js"
+    "start": "nodemon -e ts --exec 'node -r esbuild-register src/main.ts'"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +21,7 @@
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "esbuild-register": "^3.4.2",
     "express": "^4.18.2",
     "jose": "^4.13.1",
     "mongodb": "^5.1.0",
